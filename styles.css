@@ -129,11 +129,16 @@ body {
 }
 
 body.landing-page {
-    background: #090d1a;
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0f1419 100%);
 }
 
 body.support-page {
-    background: #090d1a;
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0f1419 100%);
+    padding-top: 80px;
+}
+
+body.privacy-page {
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0f1419 100%);
     padding-top: 80px;
 }
 
@@ -245,6 +250,10 @@ body.support-page {
     opacity: 0.3;
 }
 
+.privacy-page .gradient-orb {
+    opacity: 0.2;
+}
+
 .orb-1 {
     width: 500px;
     height: 500px;
@@ -302,6 +311,10 @@ body.support-page {
 
 .support-page .palm-leaf {
     opacity: 0.08;
+}
+
+.privacy-page .palm-leaf {
+    opacity: 0.05;
 }
 
 .palm-leaf-1 {
@@ -1163,6 +1176,63 @@ body.support-page {
     color: rgba(255, 255, 255, 0.3);
 }
 
+/* ===== Privacy Page Overrides ===== */
+.privacy-page .logo-section {
+    animation: fadeInUp 1s ease-out 0.2s backwards;
+}
+
+.privacy-page .logo-container {
+    background: rgba(20, 184, 166, 0.1);
+    border: 1px solid rgba(20, 184, 166, 0.3);
+    box-shadow: 0 0 40px rgba(20, 184, 166, 0.3);
+}
+
+.privacy-page .logo-container:hover {
+    box-shadow: 0 0 60px rgba(20, 184, 166, 0.5);
+}
+
+.privacy-page .footer-text {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.privacy-page .footer-link {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.privacy-page .footer-link:hover {
+    color: var(--teal-light);
+}
+
+.privacy-page .footer-link::after {
+    background: var(--teal-light);
+}
+
+.privacy-page .footer-divider {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Navigation overrides for dark pages */
+.landing-page .nav,
+.privacy-page .nav {
+    background: rgba(10, 14, 26, 0.8);
+    border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+}
+
+.landing-page .nav-link,
+.privacy-page .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.landing-page .nav-link:hover,
+.privacy-page .nav-link:hover {
+    color: var(--teal-light);
+}
+
+.landing-page .nav-link::after,
+.privacy-page .nav-link::after {
+    background: linear-gradient(90deg, var(--teal-light), var(--coral));
+}
+
 /* ===== Privacy Policy Page ===== */
 .policy-wrapper {
     max-width: 900px;
@@ -1173,12 +1243,12 @@ body.support-page {
 }
 
 .policy-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(20, 184, 166, 0.05);
     backdrop-filter: blur(20px);
     border-radius: 24px;
     padding: 3rem 2.5rem;
-    box-shadow: var(--shadow-2xl);
-    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(20, 184, 166, 0.2);
     margin-bottom: 3rem;
 }
 
@@ -1186,9 +1256,8 @@ body.support-page {
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
-    color: var(--gray-900);
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    background: linear-gradient(135deg, var(--teal-light), var(--coral));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1199,7 +1268,7 @@ body.support-page {
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 1.5rem;
-    background: var(--gray-50);
+    background: rgba(20, 184, 166, 0.1);
     border-radius: 12px;
     margin-bottom: 2rem;
     border-left: 4px solid var(--teal);
@@ -1208,14 +1277,14 @@ body.support-page {
 .policy-label {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--gray-600);
+    color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .policy-value {
     font-size: 0.9375rem;
-    color: var(--gray-900);
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
 }
 
@@ -1227,24 +1296,25 @@ body.support-page {
 
 .policy-highlight {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
     padding: 1.5rem;
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(255, 212, 204, 0.1));
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(255, 212, 204, 0.1));
     border-radius: 16px;
-    border: 2px solid var(--teal-light);
+    border: 2px solid rgba(20, 184, 166, 0.4);
 }
 
 .policy-icon {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    color: var(--teal);
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    color: var(--teal-light);
+    flex-shrink: 0;
 }
 
 .policy-highlight p {
     margin: 0;
-    color: var(--gray-900);
+    color: rgba(255, 255, 255, 0.95);
     font-size: 1rem;
     line-height: 1.6;
 }
@@ -1257,19 +1327,19 @@ body.support-page {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--teal-dark);
+    color: var(--teal-light);
     margin-bottom: 1rem;
 }
 
 .policy-block p {
-    color: var(--gray-700);
+    color: rgba(255, 255, 255, 0.8);
     font-size: 1rem;
     line-height: 1.8;
     margin: 0;
 }
 
 .policy-link {
-    color: var(--teal);
+    color: var(--teal-light);
     text-decoration: none;
     font-weight: 500;
     position: relative;
@@ -1283,16 +1353,17 @@ body.support-page {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--teal);
+    background: var(--teal-light);
     transition: width 0.3s ease;
 }
 
 .policy-link:hover {
-    color: var(--teal-dark);
+    color: var(--coral);
 }
 
 .policy-link:hover::after {
     width: 100%;
+    background: var(--coral);
 }
 
 /* ===== Responsive Design ===== */
