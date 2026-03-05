@@ -287,15 +287,15 @@ img {
   object-position: center;
   transform-origin: center center;
   animation: kenBurns 32s ease-in-out infinite alternate;
-  filter: saturate(0.5) brightness(0.25);
+  filter: saturate(0.6) brightness(0.5);
 }
 
-/* Heavier overlay for these sections — text must be very readable */
+/* Overlay for these sections — text must be very readable */
 .section__bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.35);
 }
 
 /* All content in these sections sits above the background */
@@ -307,7 +307,7 @@ img {
 
 /* Connect section: sunset image benefits from a warmer overlay tone */
 .section--connect .section__bg img {
-  filter: saturate(0.4) brightness(0.2);
+  filter: saturate(0.5) brightness(0.4);
 }
 
 /* ------------------------------------------------------------
