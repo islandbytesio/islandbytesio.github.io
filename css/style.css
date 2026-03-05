@@ -1,0 +1,538 @@
+/* ============================================================
+   IslandBytes — Main Stylesheet
+   Design system documented in CLAUDE.md
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@100;200;300&display=swap');
+
+/* ------------------------------------------------------------
+   CSS Custom Properties (Design Tokens)
+   ------------------------------------------------------------ */
+:root {
+  --color-bg: #000000;
+  --color-text: #ffffff;
+  --color-text-secondary: #bbbab2;
+  --color-accent: #3e3d36;
+  --color-hover: rgba(255, 255, 255, 0.08);
+
+  --font-family: 'Barlow', sans-serif;
+
+  --font-display: clamp(3rem, 8vw, 9rem);
+  --font-heading: clamp(1.5rem, 4vw, 4rem);
+  --font-subheading: clamp(1rem, 2vw, 1.75rem);
+  --font-body: clamp(0.875rem, 1.2vw, 1rem);
+  --font-label: 0.75rem;
+
+  --nav-height: 60px;
+  --section-padding: clamp(2rem, 6vw, 6rem);
+  --content-max-width: 720px;
+}
+
+/* ------------------------------------------------------------
+   Reset & Base
+   ------------------------------------------------------------ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-weight: 300;
+  font-size: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ------------------------------------------------------------
+   Navigation
+   ------------------------------------------------------------ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  transition: background 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.nav.scrolled {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nav__brand {
+  font-size: var(--font-body);
+  font-weight: 200;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: opacity 0.3s ease;
+}
+
+.nav__brand:hover {
+  opacity: 0.6;
+}
+
+.nav__links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav__links a {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  transition: color 0.3s ease;
+}
+
+.nav__links a:hover {
+  color: var(--color-text);
+}
+
+/* ------------------------------------------------------------
+   Scroll Container (landing page)
+   ------------------------------------------------------------ */
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* ------------------------------------------------------------
+   Full-Screen Sections
+   ------------------------------------------------------------ */
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--nav-height) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem);
+  scroll-snap-align: start;
+}
+
+/* ------------------------------------------------------------
+   Section: Hero — Background Image with Ken Burns zoom
+   ------------------------------------------------------------ */
+.section--hero {
+  justify-content: center;
+  overflow: hidden; /* clip the zooming image */
+}
+
+/* The image sits behind all content and slowly zooms in */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform-origin: center center;
+  animation: kenBurns 24s ease-in-out infinite alternate;
+  /* Desaturate slightly for a moodier, more cohesive look */
+  filter: saturate(0.7) brightness(0.45);
+}
+
+@keyframes kenBurns {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.12) translate(-1%, 1%);
+  }
+}
+
+/* Dark gradient overlay — keeps text legible over the image */
+.hero__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.1) 40%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+}
+
+/* All hero text content must sit above the background */
+.section--hero > *:not(.hero__bg) {
+  position: relative;
+  z-index: 1;
+}
+
+.hero__eyebrow {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+.hero__wordmark {
+  font-size: var(--font-display);
+  font-weight: 100;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+
+.hero__tagline {
+  font-size: var(--font-subheading);
+  font-weight: 200;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+.hero__sub {
+  font-size: var(--font-body);
+  font-weight: 300;
+  color: var(--color-accent);
+  letter-spacing: 0.04em;
+}
+
+/* ------------------------------------------------------------
+   Scroll Indicator
+   ------------------------------------------------------------ */
+.scroll-indicator {
+  position: absolute;
+  bottom: clamp(1.5rem, 4vw, 3rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+  transition: opacity 0.5s ease;
+}
+
+.scroll-indicator.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scroll-indicator__line {
+  width: 1px;
+  height: 40px;
+  background: var(--color-accent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+.scroll-indicator__label {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@keyframes scrollLine {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(0.6); }
+}
+
+/* ------------------------------------------------------------
+   Shared section background (atmosphere + connect sections)
+   Slower, more still than the hero — just a subtle alive quality
+   ------------------------------------------------------------ */
+.section__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.section__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform-origin: center center;
+  animation: kenBurns 32s ease-in-out infinite alternate;
+  filter: saturate(0.5) brightness(0.25);
+}
+
+/* Heavier overlay for these sections — text must be very readable */
+.section__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* All content in these sections sits above the background */
+.section--atmosphere > *:not(.section__bg),
+.section--connect > *:not(.section__bg) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Connect section: sunset image benefits from a warmer overlay tone */
+.section--connect .section__bg img {
+  filter: saturate(0.4) brightness(0.2);
+}
+
+/* ------------------------------------------------------------
+   Section: Atmosphere
+   ------------------------------------------------------------ */
+.section--atmosphere {
+  overflow: hidden;
+}
+
+.atmosphere__label {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.atmosphere__statement {
+  font-size: var(--font-heading);
+  font-weight: 100;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  max-width: 900px;
+}
+
+.atmosphere__statement em {
+  font-style: normal;
+  color: var(--color-text-secondary);
+}
+
+/* ------------------------------------------------------------
+   Section: Connect
+   ------------------------------------------------------------ */
+.section--connect {
+  overflow: hidden;
+}
+
+.connect__label {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.connect__heading {
+  font-size: var(--font-heading);
+  font-weight: 100;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  max-width: 700px;
+}
+
+.connect__email {
+  display: inline-block;
+  font-size: var(--font-subheading);
+  font-weight: 200;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: 0.25rem;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.connect__email:hover {
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.connect__meta {
+  margin-top: clamp(1rem, 3vw, 2rem);
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+.footer {
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 5vw, 4rem);
+  border-top: 1px solid var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  scroll-snap-align: start;
+}
+
+.footer__copy {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+}
+
+.footer__links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.footer__links a {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  transition: color 0.3s ease;
+}
+
+.footer__links a:hover {
+  color: var(--color-text);
+}
+
+/* ------------------------------------------------------------
+   Reveal Animations
+   ------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal:nth-child(4) { transition-delay: 0.3s; }
+.reveal:nth-child(5) { transition-delay: 0.4s; }
+
+/* Hero fires immediately (no delay for first visible content) */
+.section--hero .reveal { transition-delay: 0s !important; }
+.section--hero .reveal:nth-child(2) { transition-delay: 0.2s !important; }
+.section--hero .reveal:nth-child(3) { transition-delay: 0.4s !important; }
+.section--hero .reveal:nth-child(4) { transition-delay: 0.6s !important; }
+.section--hero .reveal:nth-child(5) { transition-delay: 0.8s !important; }
+
+/* ------------------------------------------------------------
+   Inner Pages (support, privacy)
+   ------------------------------------------------------------ */
+.page-body {
+  overflow-y: auto;
+}
+
+.inner-page {
+  min-height: 100vh;
+  padding: calc(var(--nav-height) + clamp(3rem, 8vw, 6rem)) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 8vw, 6rem);
+}
+
+.inner-content {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.inner-content h1 {
+  font-size: var(--font-heading);
+  font-weight: 100;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+
+.inner-content h2 {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 200;
+  letter-spacing: 0.04em;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.inner-content p {
+  font-size: var(--font-body);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.inner-content a {
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-accent);
+  transition: border-color 0.3s ease;
+}
+
+.inner-content a:hover {
+  border-color: var(--color-text);
+}
+
+.inner-content .eyebrow {
+  font-size: var(--font-label);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+/* ------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------ */
+@media (max-width: 480px) {
+  .nav__links {
+    gap: 1.25rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .connect__meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

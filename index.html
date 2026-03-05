@@ -1,170 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IslandBytes - Technical Excellence with a Tropical Touch</title>
-    <meta name="description" content="Innovative technical solutions with a fresh approach. Building the future, one byte at a time.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IslandBytes — Where Innovation Meets the Horizon</title>
+  <meta name="description" content="IslandBytes — Building tomorrow's solutions with today's technology." />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="landing-page">
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <img src="logo.png" alt="IslandBytes" class="nav-logo-img" id="nav-logo">
-            </a>
-            <div class="nav-links">
-                <a href="support.html" class="nav-link">Support</a>
-            </div>
-        </div>
-    </nav>
+<body>
 
-    <!-- Animated background elements -->
-    <div class="background-container">
-        <div class="grid-overlay"></div>
-        <div class="palm-leaf palm-leaf-1"></div>
-        <div class="palm-leaf palm-leaf-2"></div>
-        <div class="palm-leaf palm-leaf-3"></div>
-        <div class="palm-leaf palm-leaf-4"></div>
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
-        
-        <!-- Floating code elements -->
-        <div class="code-float code-float-1">{ }</div>
-        <div class="code-float code-float-2">&lt;/&gt;</div>
-        <div class="code-float code-float-3">[ ]</div>
-        <div class="code-float code-float-4">= &gt;</div>
-        <div class="code-float code-float-5">0x</div>
-    </div>
+  <!-- Navigation -->
+  <nav class="nav" aria-label="Main navigation">
+    <a href="/" class="nav__brand" aria-label="IslandBytes home">IslandBytes</a>
+    <ul class="nav__links">
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </nav>
 
-    <!-- Main content -->
-    <main class="landing-container">
-        <div class="landing-content">
-            <!-- Logo section -->
-            <div class="logo-section-main">
-                <div class="logo-container-main">
-                    <img src="logo.png" alt="IslandBytes Logo" class="logo-main" id="logo">
-                </div>
-            </div>
+  <!-- Scroll Container -->
+  <div class="scroll-container">
 
-            <!-- Hero section -->
-            <div class="hero-section-main">
-                <h1 class="title-main">
-                    <span class="title-line">Where Innovation</span>
-                    <span class="title-line">Meets the Horizon</span>
-                </h1>
-                <p class="subtitle-main">Building tomorrow's solutions with today's technology</p>
-                
-                <!-- Tech stats -->
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value" data-target="99.9">0</div>
-                        <div class="stat-label">Uptime %</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" data-target="24">0</div>
-                        <div class="stat-label">7 Support</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" data-target="100">0</div>
-                        <div class="stat-label">K+ Users</div>
-                    </div>
-                </div>
+    <!-- ── Section 1: Hero ── -->
+    <section class="section section--hero" aria-label="Hero">
 
-                <!-- CTA Buttons -->
-                <div class="cta-buttons">
-                    <a href="support.html" class="btn btn-primary">
-                        <span>Get Support</span>
-                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <a href="#features" class="btn btn-secondary">
-                        <span>Learn More</span>
-                    </a>
-                </div>
-            </div>
+      <!-- Background image — replace src with your chosen image -->
+      <!-- Recommended: download from unsplash.com, save as images/hero-bg.jpg -->
+      <!-- Search terms: "dark ocean horizon" / "moody tropical coast" / "island fog aerial" -->
+      <div class="hero__bg" aria-hidden="true">
+        <img src="images/hero-bg.jpg" alt="" />
+      </div>
 
-            <!-- Features Grid -->
-            <div class="features-section" id="features">
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <h3 class="feature-title">Lightning Fast</h3>
-                        <p class="feature-description">Optimized for performance and speed across all platforms</p>
-                    </div>
+      <p class="hero__eyebrow reveal">Est. Today</p>
+      <h1 class="hero__wordmark reveal">IslandBytes</h1>
+      <p class="hero__tagline reveal">Where Innovation Meets the Horizon</p>
+      <p class="hero__sub reveal">Building tomorrow's solutions with today's technology</p>
 
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <h3 class="feature-title">Always Available</h3>
-                        <p class="feature-description">24/7 reliability with 99.9% uptime guarantee</p>
-                    </div>
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-indicator__line"></div>
+        <span class="scroll-indicator__label">Scroll</span>
+      </div>
+    </section>
 
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <h3 class="feature-title">Premium Quality</h3>
-                        <p class="feature-description">Built with cutting-edge technology and best practices</p>
-                    </div>
-                </div>
-            </div>
+    <!-- ── Section 2: Atmosphere ── -->
+    <section class="section section--atmosphere" aria-label="About">
+      <div class="section__bg" aria-hidden="true">
+        <img src="images/atmosphere-bg.jpg" alt="" />
+      </div>
+      <p class="atmosphere__label reveal">What We Do</p>
+      <p class="atmosphere__statement reveal">
+        We build at the intersection of <em>simplicity</em> and <em>ambition</em> —
+        crafting technology that feels inevitable in hindsight, and transformative in the moment.
+      </p>
+    </section>
 
-            <!-- Terminal-style showcase -->
-            <div class="terminal-section">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <div class="terminal-buttons">
-                            <span class="terminal-button terminal-close"></span>
-                            <span class="terminal-button terminal-minimize"></span>
-                            <span class="terminal-button terminal-maximize"></span>
-                        </div>
-                        <div class="terminal-title">islandbytes@terminal ~ /home/innovation</div>
-                    </div>
-                    <div class="terminal-body">
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">$</span>
-                            <span class="terminal-text typed-text"></span>
-                            <span class="terminal-cursor">|</span>
-                        </div>
-                        <div class="terminal-output"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    <!-- ── Section 3: Connect ── -->
+    <section class="section section--connect" aria-label="Contact">
+      <div class="section__bg" aria-hidden="true">
+        <img src="images/connect-bg.jpg" alt="" />
+      </div>
+      <p class="connect__label reveal">Get in Touch</p>
+      <h2 class="connect__heading reveal">Let's build something worth talking about.</h2>
+      <a class="connect__email reveal" href="mailto:support@islandbytes.io">
+        support@islandbytes.io
+      </a>
+      <div class="connect__meta reveal">
+        <span>Response within 24 hours</span>
+        <span>24/7 availability</span>
+      </div>
+    </section>
 
-    <!-- Footer -->
-    <footer class="footer-main">
-        <div class="footer-content">
-            <p class="footer-text">&copy; 2026 IslandBytes. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="support.html" class="footer-link">Support</a>
-                <span class="footer-divider">•</span>
-                <a href="cleancopy-privacy.html" class="footer-link">Privacy</a>
-                <span class="footer-divider">•</span>
-                <a href="#" class="footer-link">Terms</a>
-            </div>
-        </div>
+    <!-- ── Footer ── -->
+    <footer class="footer">
+      <p class="footer__copy">&copy; 2026 IslandBytes. All rights reserved.</p>
+      <ul class="footer__links">
+        <li><a href="support.html">Support</a></li>
+        <li><a href="cleancopy-privacy.html">Privacy</a></li>
+      </ul>
     </footer>
 
-    <script src="landing.js"></script>
+  </div><!-- /scroll-container -->
+
+  <script src="js/main.js"></script>
 </body>
 </html>
