@@ -18,8 +18,11 @@ import re
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 
 MAX_DIFF_CHARS = 12_000
