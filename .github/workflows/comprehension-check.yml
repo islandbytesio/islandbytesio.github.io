@@ -1,0 +1,199 @@
+name: Comprehension Gate — Check Answers
+
+# Triggers when someone comments on a PR.
+# If the comment is from the PR author and contains answer letters (A–D),
+# answers are checked against the stored key. No LLM call required — instant pass/fail.
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  pull-requests: write
+  statuses: write
+  issues: read
+
+jobs:
+  check-answers:
+    name: Check Answers
+    runs-on: ubuntu-latest
+    # Fire on PR comments only; require at least one standalone A–D letter
+    if: |
+      github.event.issue.pull_request != null &&
+      (
+        contains(github.event.comment.body, '1.') ||
+        contains(github.event.comment.body, '1)') ||
+        contains(github.event.comment.body, 'Q1')
+      )
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ── Gather PR data and extract stored questions + answer key ───────────
+      - name: Fetch PR data and extract gate questions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const prNumber = context.payload.issue.number;
+            const commenter = context.payload.comment.user.login;
+
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+
+            // Only the PR author may submit answers
+            if (commenter !== pr.user.login) {
+              console.log(`Skipping: ${commenter} is not the PR author (${pr.user.login})`);
+              fs.writeFileSync('/tmp/gate_data.json', JSON.stringify({ skip: true }));
+              return;
+            }
+
+            // Find the most recent comprehension gate comment
+            const allComments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber }
+            );
+            const gateComment = allComments
+              .filter(c => c.user.type === 'Bot' && c.body.includes('<!-- comprehension-gate:'))
+              .pop();
+
+            if (!gateComment) {
+              console.log('No comprehension gate comment found');
+              fs.writeFileSync('/tmp/gate_data.json', JSON.stringify({ skip: true }));
+              return;
+            }
+
+            const match = gateComment.body.match(/<!-- comprehension-gate: (.+?) -->/s);
+            if (!match) {
+              fs.writeFileSync('/tmp/gate_data.json', JSON.stringify({ skip: true }));
+              return;
+            }
+
+            const gateData = JSON.parse(Buffer.from(match[1].trim(), 'base64').toString());
+            fs.writeFileSync('/tmp/gate_data.json', JSON.stringify({
+              skip: false,
+              questions: gateData.questions,
+              head_sha: pr.head.sha,
+              pr_number: prNumber,
+            }, null, 2));
+
+            // Write comment body to a file to avoid shell-escaping issues
+            fs.writeFileSync('/tmp/answer_comment.txt', context.payload.comment.body);
+            console.log(`Processing answers for PR #${prNumber}`);
+
+      # ── Decide whether to continue ─────────────────────────────────────────
+      - name: Check skip flag
+        id: gate
+        run: |
+          python3 -c "
+          import json
+          d = json.load(open('/tmp/gate_data.json'))
+          print(f'skip={str(d.get(\"skip\", True)).lower()}')
+          if not d.get('skip'):
+              print(f'head_sha={d[\"head_sha\"]}')
+          " >> $GITHUB_OUTPUT
+
+      # ── Parse answer letters from the comment ──────────────────────────────
+      - name: Parse answer letters
+        if: steps.gate.outputs.skip == 'false'
+        id: answers
+        run: |
+          python scripts/comprehension_gate.py parse-answers /tmp/answer_comment.txt \
+            > /tmp/parsed_answers.json
+          cat /tmp/parsed_answers.json
+          FOUND=$(python3 -c "import json; print(str(json.load(open('/tmp/parsed_answers.json'))['found']).lower())")
+          echo "found=$FOUND" >> $GITHUB_OUTPUT
+
+      # ── Check answers against the stored key — no API call ─────────────────
+      - name: Check answers against key
+        if: |
+          steps.gate.outputs.skip == 'false' &&
+          steps.answers.outputs.found == 'true'
+        id: check
+        run: |
+          python3 - << 'EOF'
+          import json
+
+          gate   = json.load(open('/tmp/gate_data.json'))
+          parsed = json.load(open('/tmp/parsed_answers.json'))
+
+          payload = {
+              'questions': gate['questions'],
+              'answers':   parsed['answers'],
+          }
+          json.dump(payload, open('/tmp/check_payload.json', 'w'))
+          EOF
+
+          python scripts/comprehension_gate.py check-answers /tmp/check_payload.json \
+            > /tmp/result.json
+
+          PASSED=$(python3 -c "import json; print(str(json.load(open('/tmp/result.json'))['passed']).lower())")
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+
+      # ── Update commit status + post result ────────────────────────────────
+      - name: Post result and update commit status
+        if: |
+          steps.gate.outputs.skip == 'false' &&
+          steps.answers.outputs.found == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const gateData = JSON.parse(fs.readFileSync('/tmp/gate_data.json',  'utf8'));
+            const result   = JSON.parse(fs.readFileSync('/tmp/result.json',     'utf8'));
+            const passed   = '${{ steps.check.outputs.passed }}' === 'true';
+
+            // ── Commit status ──────────────────────────────────────────────
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              sha:   gateData.head_sha,
+              state: passed ? 'success' : 'failure',
+              description: `${passed ? '✅' : '❌'} ${result.score} — ${result.feedback}`.substring(0, 140),
+              context: 'Comprehension Gate',
+            });
+
+            // ── Per-question breakdown ─────────────────────────────────────
+            const breakdown = result.results
+              .map(r => `Q${r.id}: ${r.passed ? '✅' : `❌ (you answered ${r.given})`}`)
+              .join('  ·  ');
+
+            // ── Comment ────────────────────────────────────────────────────
+            const nextSteps = passed
+              ? "✅ Comprehension gate passed — this PR is cleared to merge."
+              : "Please re-read the flagged parts of the diff and submit a new comment with corrected answers.";
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: gateData.pr_number,
+              body:
+                `## ${passed ? '✅' : '❌'} Comprehension Gate — ${passed ? 'PASSED' : 'INCORRECT'}\n\n` +
+                `**Score:** ${result.score}  ·  ${breakdown}\n\n` +
+                nextSteps,
+            });
+
+      # ── Handle unrecognized format ─────────────────────────────────────────
+      - name: Notify on unrecognized format
+        if: |
+          steps.gate.outputs.skip == 'false' &&
+          steps.answers.outputs.found == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const gateData = JSON.parse(require('fs').readFileSync('/tmp/gate_data.json', 'utf8'));
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: gateData.pr_number,
+              body:
+                "⚠️ **Comprehension Gate** — couldn't read your answers.\n\n" +
+                "Please use this format:\n```\n1. A\n2. C\n3. B\n```",
+            });
