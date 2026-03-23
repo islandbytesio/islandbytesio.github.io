@@ -10,7 +10,6 @@ Static GitHub Pages site for **IslandBytes** (hosted via `CNAME`). No build step
 
 The repo enforces a comprehension gate on all PRs targeting `main` via three GitHub Actions workflows:
 
-- **`comprehension-gate-push.yml`** — triggers on push to any non-`main` branch. Calls Claude (`claude-opus-4-6`) via `scripts/comprehension_gate.py` to generate 3 multiple-choice questions from the commit diff, posts them as a commit comment, and sets a `pending` commit status ("Comprehension Gate").
 - **`comprehension-gate-pr.yml`** — triggers on PR open/sync/ready. Generates questions from the PR diff, posts them in a PR comment, and sets the commit status to `pending`. Uses upsert logic so re-pushing updates the existing comment rather than creating a new one.
 - **`comprehension-check.yml`** — triggers on PR comments (`issue_comment`). Parses the PR author's reply for answer letters (formats: `1. A`, `1) A`, `Q1: A`, or bare `A B C`), checks them against the answer key stored in a base64-encoded hidden HTML comment, then sets the commit status to `success` or `failure` and posts a result comment.
 
