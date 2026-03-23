@@ -59,8 +59,6 @@ jobs:
         run: |
           python scripts/comprehension_gate.py generate /tmp/pr_diff.txt \
             > /tmp/questions.json
-          echo "Generated questions:"
-          cat /tmp/questions.json
 
       # ── Post the questions as a PR comment and set pending status ──────────
       - name: Post questions and set pending status
@@ -82,11 +80,11 @@ jobs:
 
             // Embed the full question data (including correct answers) as a hidden
             // HTML comment so the answer-checker can retrieve them without a DB.
-            const hiddenData = JSON.stringify({
+            const hiddenData = Buffer.from(JSON.stringify({
               questions: questionsData.questions,
               sha,
               generated_at: new Date().toISOString(),
-            });
+            })).toString('base64');
 
             const body = [
               '## 🧠 Comprehension Gate',

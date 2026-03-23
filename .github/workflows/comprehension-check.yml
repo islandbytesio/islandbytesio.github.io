@@ -76,7 +76,7 @@ jobs:
               return;
             }
 
-            const gateData = JSON.parse(match[1]);
+            const gateData = JSON.parse(Buffer.from(match[1].trim(), 'base64').toString());
             fs.writeFileSync('/tmp/gate_data.json', JSON.stringify({
               skip: false,
               questions: gateData.questions,
@@ -133,7 +133,6 @@ jobs:
 
           python scripts/comprehension_gate.py check-answers /tmp/check_payload.json \
             > /tmp/result.json
-          cat /tmp/result.json
 
           PASSED=$(python3 -c "import json; print(str(json.load(open('/tmp/result.json'))['passed']).lower())")
           echo "passed=$PASSED" >> $GITHUB_OUTPUT
