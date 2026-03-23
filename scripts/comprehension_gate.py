@@ -12,7 +12,6 @@ Modes:
 All modes output JSON to stdout.
 """
 
-import anthropic
 import json
 import re
 import sys
@@ -55,6 +54,7 @@ def extract_json(text: str) -> str:
 
 def generate_questions(diff: str) -> list[dict]:
     """Call Claude to generate 3 multiple-choice comprehension questions."""
+    import anthropic
     client = anthropic.Anthropic()
 
     response = client.messages.create(
