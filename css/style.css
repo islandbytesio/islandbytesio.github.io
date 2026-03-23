@@ -458,6 +458,24 @@ img {
 .section--hero .reveal:nth-child(5) { transition-delay: 0.8s !important; }
 
 /* ------------------------------------------------------------
+   About Page Background
+   ------------------------------------------------------------ */
+.about__bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.about__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.5) brightness(0.25);
+}
+
+/* ------------------------------------------------------------
    Inner Pages (support, privacy)
    ------------------------------------------------------------ */
 .page-body {
