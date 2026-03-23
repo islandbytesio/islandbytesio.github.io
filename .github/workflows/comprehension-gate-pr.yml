@@ -88,25 +88,27 @@ jobs:
               generated_at: new Date().toISOString(),
             });
 
-            const body = `## 🧠 Comprehension Gate
-
-Answer the questions below to confirm you understand these changes. Reply with just the letters — no sentences needed.
-
-${qBlocks}
-
----
-
-**Reply with your answers:**
-
-\`\`\`
-1. A
-2. C
-3. B
-\`\`\`
-
-> Questions are based on commit \`${sha.substring(0, 7)}\`. Pushing new commits regenerates the questions.
-
-<!-- comprehension-gate: ${hiddenData} -->`;
+            const body = [
+              '## 🧠 Comprehension Gate',
+              '',
+              'Answer the questions below to confirm you understand these changes. Reply with just the letters — no sentences needed.',
+              '',
+              qBlocks,
+              '',
+              '***',
+              '',
+              '**Reply with your answers:**',
+              '',
+              '```',
+              '1. A',
+              '2. C',
+              '3. B',
+              '```',
+              '',
+              `> Questions are based on commit \`${sha.substring(0, 7)}\`. Pushing new commits regenerates the questions.`,
+              '',
+              `<!-- comprehension-gate: ${hiddenData} -->`,
+            ].join('\n');
 
             // Upsert: update existing gate comment if present, otherwise create
             const allComments = await github.paginate(
